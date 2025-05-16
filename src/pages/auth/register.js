@@ -71,7 +71,7 @@ export default function Register() {
           </button>
         </form>
         <p className="mt-2 text-center text-sm">
-          ¿Ya tienes cuenta? <a href="/auth/login" className="text-blue-500">Inicia sesión</a>
+          ¿Ya tienes cuenta? <link href="/auth/login" className="text-blue-500">Inicia sesión</link>
         </p>
       </div>
     </div>

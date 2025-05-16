@@ -78,7 +78,7 @@ export default function Login() {
           </button>
         </form>
         <p className="mt-2 text-center text-sm">
-          ¿No tienes cuenta? <a href="/auth/register" className="text-blue-500">Regístrate</a>
+          ¿No tienes cuenta? <link href="/auth/register" className="text-blue-500">Regístrate</link>
         </p>
       </div>
     </div>
