@@ -1,15 +1,16 @@
 import prisma from "@/lib/prisma";
 
 export default async function handler(req, res) {
-  const { id } = req.query;
+  const { slug } = req.query;
 
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Método no permitido" });
   }
 
   try {
+    // Buscar directamente por el slug como texto
     const formulario = await prisma.formulario.findUnique({
-      where: { id: parseInt(id) },
+      where: { slug },
     });
 
     if (!formulario) {

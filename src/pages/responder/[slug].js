@@ -5,7 +5,8 @@ import { openDB } from "idb";
 
 export default function ResponderFormulario() {
   const router = useRouter();
-  const { id } = router.query;
+  const { slug } = router.query;
+
   const [formulario, setFormulario] = useState(null);
   const [respuestas, setRespuestas] = useState({});
   const [modoLlenado, setModoLlenado] = useState(false);
@@ -14,15 +15,15 @@ export default function ResponderFormulario() {
   const [pendientes, setPendientes] = useState(0);
 
   useEffect(() => {
-    if (id) {
+    if (slug) {
       fetchFormulario();
       contarPendientes();
     }
-  }, [id]);
+  }, [slug]);
 
   const fetchFormulario = async () => {
     try {
-      const res = await axios.get(`/api/public/formularios/${id}`);
+      const res = await axios.get(`/api/public/formularios/${slug}`);
       setFormulario(res.data);
     } catch (error) {
       console.error("Error al cargar formulario:", error);
@@ -42,14 +43,14 @@ export default function ResponderFormulario() {
 
   const guardarOffline = async (respuestas) => {
     const db = await getDB();
-    await db.add("respuestas", { formularioId: id, respuestas, enviado: false });
+    await db.add("respuestas", { formularioSlug: slug, respuestas, enviado: false });
     contarPendientes();
   };
 
   const contarPendientes = async () => {
     const db = await getDB();
     const all = await db.getAll("respuestas");
-    const sinEnviar = all.filter(r => !r.enviado && r.formularioId === id);
+    const sinEnviar = all.filter(r => !r.enviado && r.formularioSlug === slug);
     setPendientes(sinEnviar.length);
   };
 
@@ -57,11 +58,11 @@ export default function ResponderFormulario() {
     setSincronizando(true);
     const db = await getDB();
     const all = await db.getAll("respuestas");
-    const sinEnviar = all.filter(r => !r.enviado && r.formularioId === id);
+    const sinEnviar = all.filter(r => !r.enviado && r.formularioSlug === slug);
 
     for (const item of sinEnviar) {
       try {
-        await axios.post(`/api/responder/${id}`, { respuestas: item.respuestas });
+        await axios.post(`/api/responder/${formulario.id}`, { respuestas: item.respuestas });
         await db.delete("respuestas", item.id);
       } catch (err) {
         console.error("Error sincronizando:", err);
@@ -82,7 +83,7 @@ export default function ResponderFormulario() {
     setEnviando(true);
     try {
       if (navigator.onLine) {
-        await axios.post(`/api/responder/${id}`, { respuestas });
+        await axios.post(`/api/responder/${formulario.id}`, { respuestas });
         alert("Respuesta enviada con éxito");
       } else {
         await guardarOffline(respuestas);

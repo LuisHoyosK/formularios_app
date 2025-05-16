@@ -361,10 +361,15 @@ const contarValores = (valores) => {
           <Button
             className="bg-indigo-600 text-white"
             onClick={() => {
-              const link = `${window.location.origin}/responder/${selectedForm.id}`;
-              navigator.clipboard.writeText(link);
-              alert("¡Enlace para llenar formulario copiado al portapapeles!");
+              const link = `${window.location.origin}/responder/${selectedForm.slug}`;
+              if (navigator.clipboard?.writeText) {
+                navigator.clipboard.writeText(link);
+                alert("¡Enlace copiado al portapapeles!");
+              } else {
+                alert("Tu navegador no permite copiar al portapapeles. Copia este enlace manualmente: " + link);
+              }
             }}
+
           >
             Copiar enlace
           </Button>

@@ -3,26 +3,38 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
-  const { id } = req.query;
+  const { slug } = req.query;
 
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
   }
 
   try {
-    const tableName = `respuestas_${id}`;
     const { respuestas } = req.body;
 
     if (!respuestas || typeof respuestas !== "object") {
       return res.status(400).json({ error: "Respuestas inválidas" });
     }
 
+    // Buscar el formulario por slug
+    const formulario = await prisma.formulario.findUnique({
+      where: { slug },
+    });
+
+    if (!formulario) {
+      return res.status(404).json({ error: "Formulario no encontrado" });
+    }
+
+    const tableName = `respuestas_${formulario.id}`;
+
     // Construir las columnas y valores dinámicamente
     const columns = Object.keys(respuestas)
       .map((key) => `\`${key}\``)
-      .join(", ");  
+      .join(", ");
     const values = Object.values(respuestas)
-      .map((value) => (typeof value === "string" ? `'${value.replace(/'/g, "''")}'` : value))
+      .map((value) =>
+        typeof value === "string" ? `'${value.replace(/'/g, "''")}'` : value
+      )
       .join(", ");
 
     const insertQuery = `

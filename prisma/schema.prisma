@@ -10,11 +10,13 @@ datasource db {
 model Formulario {
   id        Int      @id @default(autoincrement())
   title     String
-  userId   Int
-  user     User    @relation(fields: [userId], references: [id])
+  slug      String   @unique // <- nuevo campo
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   fields    Json
 }
+
 
 model User {
   id        Int      @id @default(autoincrement())
