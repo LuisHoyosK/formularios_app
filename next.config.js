@@ -11,8 +11,8 @@ module.exports = withPWA({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  // otras opciones que ya tengas, como reactStrictMode, etc.
+  reactStrictMode: true,
+  swcMinify: true,
 };
 
 module.exports = nextConfig;
