@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
+
 
 export default function Register() {
   const [user, setUser] = useState({ name: "", email: "", password: "" });
@@ -71,7 +73,7 @@ export default function Register() {
           </button>
         </form>
         <p className="mt-2 text-center text-sm">
-          ¿Ya tienes cuenta? <link href="/auth/login" className="text-blue-500">Inicia sesión</link>
+          ¿Ya tienes cuenta? <Link href="/auth/login" className="text-blue-500">Inicia sesión</Link>
         </p>
       </div>
     </div>

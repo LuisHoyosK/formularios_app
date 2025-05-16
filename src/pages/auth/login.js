@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import { AuthContext } from "@/context/authContext";
+import Link from "next/link";
+
 
 export default function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
@@ -78,7 +80,7 @@ export default function Login() {
           </button>
         </form>
         <p className="mt-2 text-center text-sm">
-          ¿No tienes cuenta? <link href="/auth/register" className="text-blue-500">Regístrate</link>
+          ¿No tienes cuenta? <Link href="/auth/register" className="text-blue-500">Regístrate</Link>
         </p>
       </div>
     </div>
