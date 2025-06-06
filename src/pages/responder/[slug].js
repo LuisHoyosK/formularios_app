@@ -13,6 +13,29 @@ export default function ResponderFormulario() {
   const [enviando, setEnviando] = useState(false);
   const [sincronizando, setSincronizando] = useState(false);
   const [pendientes, setPendientes] = useState(0);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+
+useEffect(() => {
+  const handler = (e) => {
+    e.preventDefault();
+    setDeferredPrompt(e);
+    setShowInstallPrompt(true); // Mostrar botón solo si es instalable
+  };
+  window.addEventListener("beforeinstallprompt", handler);
+  return () => window.removeEventListener("beforeinstallprompt", handler);
+}, []);
+
+const handleInstallClick = () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => {
+      setDeferredPrompt(null);
+      setShowInstallPrompt(false);
+    });
+  }
+};
+
 
   useEffect(() => {
     if (slug) {
@@ -108,6 +131,15 @@ export default function ResponderFormulario() {
         <p className="mb-6 text-gray-600">
           Puedes llenar este formulario incluso sin conexión. Luego sincroniza cuando tengas internet.
         </p>
+        {showInstallPrompt && (
+  <button
+    onClick={handleInstallClick}
+    className="bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600"
+  >
+    Instalar esta app
+  </button>
+  )}
+
         <div className="flex flex-col gap-4 items-center">
           <button
             onClick={() => setModoLlenado(true)}
