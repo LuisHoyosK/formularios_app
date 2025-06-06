@@ -1,18 +1,20 @@
 {
   "name": "RadForms",
   "short_name": "RadForms",
-  "start_url": "/",
+  "description": "Llena formularios sin conexión y sincroniza cuando vuelvas a tener internet.",
+  "start_url": "/responder/",
+  "scope": "/responder/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "description": "RadForms - Formularios inteligentes",
+  "theme_color": "#0d9488",
   "icons": [
     {
-      "src": "/icon-192x192.png",
+      "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/icon-512x512.png",
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
